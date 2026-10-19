@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HealthTrack · Follow-Up Generator</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#fff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+  --brand:#2563eb; --brand-d:#1d4ed8; --nav:#0b1b3a; --nav2:#12285a;
+  --ok:#16a34a; --okbg:#dcfce7; --warn:#d97706; --warnbg:#fef3c7; --bad:#dc2626; --badbg:#fee2e2;
+  --ai:#7c3aed; --aibg:#ede9fe; --tpl:#0369a1; --tplbg:#e0f2fe;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh}
+aside{width:240px;background:linear-gradient(180deg,var(--nav),var(--nav2));color:#fff;padding:22px 18px;position:sticky;top:0;height:100vh;flex-shrink:0}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:28px}
+.brand svg{flex-shrink:0}.brand b{font-size:20px;display:block;line-height:1.1}.brand small{color:#9fb2d9;font-size:11px}
+.pill-nav{background:rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;font-weight:600;margin-bottom:22px}
+aside h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;color:#9fb2d9;text-transform:uppercase}
+aside ol{margin:0;padding-left:18px;color:#cdd8f1;font-size:13px}aside li{margin-bottom:6px}
+.conn{position:absolute;left:18px;right:18px;bottom:20px;font-size:12px;color:#cdd8f1;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#f59e0b}.dot.on{background:#22c55e}
+main{flex:1;min-width:0;padding:26px 30px 60px;max-width:1280px}
+h1{margin:0;font-size:26px}.sub{color:var(--muted);margin:2px 0 20px}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px}
+@media(max-width:1000px){aside{display:none}.grid{grid-template-columns:1fr}main{padding:18px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.card h3{margin:0 0 12px;font-size:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,.btn{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:9px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+button:hover,.btn:hover{border-color:#b6c2d6;background:#f8fafc}
+button.primary{background:var(--brand);border-color:var(--brand);color:#fff}button.primary:hover{background:var(--brand-d)}
+button.big{padding:12px 18px;font-size:15px;width:100%;justify-content:center}
+button.sample{background:#eff6ff;border-color:#bfdbfe;color:var(--brand-d)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:14px 0}
+.tab{border:0;border-radius:8px 8px 0 0;background:none;color:var(--muted);padding:8px 12px}
+.tab.on{color:var(--brand);box-shadow:inset 0 -2px 0 var(--brand)}
+.panel{display:none}.panel.on{display:block}
+.drop{border:2px dashed #cbd5e1;border-radius:12px;padding:22px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.over{border-color:var(--brand);background:#eff6ff}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+input,select{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:2px solid #bfdbfe;border-color:var(--brand)}
+.form{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.form .wide{grid-column:span 2}
+@media(max-width:700px){.form{grid-template-columns:1fr 1fr}}
+.ready{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ready b{font-size:15px}
+.queue{max-height:190px;overflow:auto;margin-top:10px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#f8fafc;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+.msg{max-width:430px;color:#334155}.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-ok{background:var(--okbg);color:var(--ok)}.b-warn{background:var(--warnbg);color:var(--warn)}.b-bad{background:var(--badbg);color:var(--bad)}
+.b-ai{background:var(--aibg);color:var(--ai)}.b-tpl{background:var(--tplbg);color:var(--tpl)}.b-grey{background:#f1f5f9;color:#475569}
+.progress{height:10px;border-radius:99px;background:#e2e8f0;overflow:hidden;margin:12px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#16a34a);border-radius:99px;transition:width .4s}
+.bar.run{width:35%;background:linear-gradient(90deg,#60a5fa,#2563eb);animation:slide 1.1s ease-in-out infinite}
+@keyframes slide{0%{margin-left:-35%}100%{margin-left:100%}}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{border-radius:12px;padding:12px 14px}.stat b{font-size:24px;display:block;line-height:1.15}.stat span{color:var(--muted);font-size:12px}
+.s1{background:#eff6ff}.s2{background:#f0fdf4}.s3{background:#fef2f2}.s4{background:#faf5ff}.s5{background:#fffbeb}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.timer{font-variant-numeric:tabular-nums;color:var(--muted)}
+.hidden{display:none!important}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.tools input{width:230px}.tools select{width:auto}
+.pager{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);flex-wrap:wrap;gap:8px}
+.pager .pg{display:flex;gap:6px;align-items:center}.pager button{padding:5px 11px}.pager button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.err{background:var(--badbg);color:#991b1b;border:1px solid #fecaca;border-radius:10px;padding:10px 12px;margin-top:12px}
+dialog{border:0;border-radius:16px;padding:0;width:min(560px,92vw);box-shadow:0 20px 60px rgba(15,23,42,.35)}
+dialog::backdrop{background:rgba(15,23,42,.5)}
+.dlg{padding:22px}.dlg h3{margin:0 0 4px}.dlg .bubble{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px;margin:14px 0;font-size:15px;white-space:pre-wrap}
+.dlg ul{padding-left:18px;margin:6px 0 14px;color:#334155}
+details{margin-top:12px}summary{cursor:pointer;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 35S4 25 4 14a8 8 0 0 1 16-2 8 8 0 0 1 16 2c0 11-16 21-16 21z" fill="#3b82f6"/><path d="M8 20h7l3-6 4 11 3-5h7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><b>HealthTrack</b><small>AI-Powered Patient<br>Follow-Up System</small></div>
+  </div>
+  <div class="pill-nav">✉️ Generate Messages</div>
+  <h4>How it works</h4>
+  <ol><li>Load or enter appointments</li><li>Data is cleaned &amp; validated</li><li>RAG retrieves health tips</li><li>Mistral writes messages in batches</li></ol>
+  <div class="conn"><span class="dot" id="dot"></span><span id="connText">Checking…</span></div>
+</aside>
+
+<main>
+  <h1>Generate Follow-Up Messages</h1>
+  <p class="sub">Enter appointment data or load 100 samples, then generate personalized follow-up messages with AI + a health knowledge base.</p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="head">
+        <h3 style="margin:0">1 · Patient appointments</h3>
+        <button class="sample" id="loadSample">⚡ Load 100 sample records</button>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab on" data-tab="csv">Upload CSV</button>
+        <button class="tab" data-tab="manual">Enter manually</button>
+      </div>
+
+      <div class="panel on" id="panel-csv">
+        <div class="drop" id="drop">Drop a CSV here or <u>browse</u><br><small>columns: patient_id, patient_name, condition, appointment_date, doctor, phone, notes, response_status, attempts</small></div>
+        <input type="file" id="file" accept=".csv,text/csv" class="hidden">
+        <p style="margin:10px 0 0"><a href="/api/sample.csv" class="btn">⬇ Download sample CSV</a></p>
+      </div>
+
+      <div class="panel" id="panel-manual">
+        <div class="form">
+          <div><label>Patient ID</label><input id="f_id" placeholder="P101"></div>
+          <div class="wide"><label>Patient name *</label><input id="f_name" placeholder="Rahul Sharma"></div>
+          <div><label>Condition *</label><input id="f_cond" placeholder="Diabetes" list="conds"></div>
+          <div><label>Appointment date *</label><input id="f_date" type="date"></div>
+          <div><label>Doctor</label><input id="f_doc" placeholder="Dr. Ramesh"></div>
+          <div><label>Phone</label><input id="f_phone" placeholder="98765 43210"></div>
+          <div><label>Patient response</label><select id="f_resp"><option value="">Pending</option><option value="responded">Responded</option><option value="no_response">No response</option></select></div>
+          <div><label>Previous attempts</label><input id="f_att" type="number" min="0" max="10" value="0"></div>
+          <div class="wide"><label>Notes</label><input id="f_notes" placeholder="e.g. missed evening dose"></div>
+        </div>
+        <datalist id="conds"><option>Diabetes</option><option>Hypertension</option><option>Asthma</option><option>High cholesterol</option><option>Thyroid</option><option>Back pain</option><option>Knee injury</option><option>Migraine</option><option>Viral fever</option><option>Post-surgery</option><option>Arthritis</option><option>Anemia</option></datalist>
+        <p style="margin:12px 0 0"><button id="addOne">➕ Add patient</button></p>
+      </div>
+
+      <div class="ready" id="ready">
+        <span id="readyText">No records loaded yet.</span>
+        <button id="clear" class="hidden">Clear</button>
+      </div>
+      <div class="queue hidden" id="queueWrap"><table><thead><tr><th>#</th><th>Name</th><th>Condition</th><th>Date</th><th>Response</th></tr></thead><tbody id="queue"></tbody></table></div>
+    </section>
+
+    <section class="card">
+      <h3>2 · Processing options</h3>
+      <label>LLM model</label><select id="model"></select>
+      <div class="row" style="margin-top:12px;flex-wrap:nowrap">
+        <div style="flex:1"><label>Parallel requests</label><select id="conc"></select></div>
+        <div style="flex:1"><label>Patients / request</label><select id="batch"></select></div>
+      </div>
+      <button id="fastPreset" class="sample" type="button" style="margin-top:10px">⚡ Apply fast AI settings</button>
+      <p class="sub" id="processingHint" style="font-size:12px;margin:10px 0 14px"></p>
+      <div class="err hidden" id="batchWarn" style="background:var(--warnbg);color:#92400e;border-color:#fde68a;margin:0 0 12px">⚠ Big batches can exceed the configured request timeout and fall back to templates. Recommended: 5–10 patients per request; increase LLM_TIMEOUT_SECONDS in .env if requests are timing out.</div>
+      <button class="primary big" id="go" disabled>▶ Generate follow-up messages</button>
+      <div class="err hidden" id="err"></div>
+    </section>
+  </div>
+
+  <section class="card hidden" id="runCard" style="margin-top:18px">
+    <div class="head">
+      <div><h3 id="runTitle" style="margin:0">Processing…</h3><span class="sub" id="runSub" style="margin:0">Cleaning data, retrieving health tips, generating messages</span></div>
+      <div class="row"><span class="timer" id="timer">0.0 s</span><span class="badge b-grey" id="runBadge">Running</span></div>
+    </div>
+    <div class="progress"><div class="bar run" id="bar"></div></div>
+    <div class="stats">
+      <div class="stat s1"><b id="sTotal">–</b><span>Total records</span></div>
+      <div class="stat s2"><b id="sOk">–</b><span>Messages generated</span></div>
+      <div class="stat s3"><b id="sRej">–</b><span>Rejected / duplicates</span></div>
+      <div class="stat s5"><b id="sFall">–</b><span>Template fallbacks</span></div>
+      <div class="stat s4"><b id="sTime">–</b><span id="sTimeLbl">Pipeline time</span></div>
+    </div>
+    <div class="err hidden" id="fbWarn" style="background:var(--warnbg);color:#92400e;border-color:#fde68a"></div>
+    <details id="rejBox" class="hidden"><summary id="rejSum"></summary><div class="queue"><table><thead><tr><th>Row</th><th>Patient</th><th>Reason</th></tr></thead><tbody id="rejBody"></tbody></table></div></details>
+  </section>
+
+  <section class="card hidden" id="resCard" style="margin-top:18px">
+    <div class="head"><h3 style="margin:0" id="resTitle">Results</h3>
+      <button id="dl">⬇ Download results (CSV)</button></div>
+    <div class="tools">
+      <input id="search" placeholder="Search name, ID, condition…">
+      <select id="fSource"><option value="">All sources</option><option value="llm">AI (Mistral)</option><option value="template">Template</option></select>
+      <select id="fType"><option value="">All follow-up types</option><option value="standard">Standard</option><option value="reminder">Reminder (no response)</option><option value="escalation">Escalation</option></select>
+    </div>
+    <div style="overflow:auto"><table>
+      <thead><tr><th>#</th><th>ID</th><th>Patient</th><th>Condition</th><th>Type</th><th>Source</th><th>Message</th><th></th></tr></thead>
+      <tbody id="results"></tbody></table></div>
+    <div class="pager"><span id="pgInfo"></span><div class="pg" id="pgBtns"></div>
+      <span>Rows <select id="pageSize" style="width:auto;display:inline-block"><option>10</option><option>25</option><option>50</option></select></span></div>
+  </section>
+</main>
+
+<dialog id="dlg"><div class="dlg">
+  <h3 id="dName"></h3><div class="sub" id="dMeta" style="margin:0"></div>
+  <div class="bubble" id="dMsg"></div>
+  <b>Health tips retrieved (RAG)</b><ul id="dTips"></ul>
+  <div class="row" style="justify-content:flex-end"><button id="dCopy">Copy message</button><button class="primary" id="dClose">Close</button></div>
+</div></dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = { rows: null, csv: null, csvName: '', results: [], page: 1 };
+const OFFLINE = 'offline-template';
+
+function el(tag, props = {}, ...kids) {
+  const n = document.createElement(tag);
+  Object.entries(props).forEach(([k, v]) => k === 'class' ? n.className = v : n.setAttribute(k, v));
+  kids.flat().forEach(k => n.append(k instanceof Node ? k : document.createTextNode(k ?? '')));
+  return n;
+}
+const badge = (text, cls) => el('span', { class: 'badge ' + cls }, text);
+const fmtDate = iso => new Date(iso + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+const TYPE_LABEL = { standard: ['Standard', 'b-grey'], reminder: ['Reminder', 'b-warn'], escalation: ['Escalation', 'b-bad'] };
+
+/* ---------- config ---------- */
+async function init() {
+  const cfg = await (await fetch('/api/config')).json();
+  $('dot').classList.toggle('on', cfg.llm_configured);
+  $('connText').textContent = cfg.llm_configured ? 'Mistral connected' : 'No API key · offline templates only';
+  cfg.models.forEach(m => $('model').append(el('option', { value: m }, m === OFFLINE ? 'offline-template (no API)' : m)));
+  $('model').value = cfg.default_model;
+  [1, 2, 4, 5, 10, 20, 25, 50].forEach(n => $('conc').append(el('option', { value: n }, n)));
+  [1, 5, 10, 20, 25].forEach(n => $('batch').append(el('option', { value: n }, n)));
+  $('conc').value = cfg.concurrency; $('batch').value = cfg.batch_size;
+  $('fastPreset').disabled = !cfg.models.includes('ministral-3b-latest');
+  $('fastPreset').title = $('fastPreset').disabled ? 'Configure a Mistral API key to use AI settings.' : '';
+  updateProcessingHint();
+}
+
+/* ---------- input ---------- */
+function updateProcessingHint() {
+  const n = state.csv ? Math.max(state.csv.split(/\r?\n/).filter(l => l.trim()).length - 1, 0) : (state.rows?.length || 0);
+  const batchSize = +$('batch').value, concurrency = +$('conc').value;
+  const requests = n ? Math.ceil(n / batchSize) : 0;
+  const estimate = n
+    ? `For ${n} records at ${batchSize} patients per request: about ${requests} total API calls, with up to ${Math.min(requests, concurrency)} running at once (the concurrency setting is a maximum). `
+    : 'Concurrency is the maximum number of API calls running at once; remaining batches wait. ';
+  $('processingHint').textContent = `${estimate}The fast preset uses ministral-3b-latest, 20 concurrent requests, and 5 patients per request. Provider speed and rate limits affect timing, so under 5 seconds is not guaranteed. Failed calls fall back to templates.`;
+}
+
+function updateReady() {
+  const n = state.csv ? Math.max(state.csv.split(/\r?\n/).filter(l => l.trim()).length - 1, 0) : (state.rows?.length || 0);
+  const src = state.csv ? `from ${state.csvName}` : '';
+  $('readyText').replaceChildren(el('b', {}, `${n} record${n === 1 ? '' : 's'}`), ` ready ${src}`);
+  $('go').disabled = n === 0; $('clear').classList.toggle('hidden', n === 0);
+  updateProcessingHint();
+  const q = $('queue'); q.replaceChildren();
+  $('queueWrap').classList.toggle('hidden', !state.rows?.length);
+  (state.rows || []).forEach((r, i) => q.append(el('tr', {}, el('td', {}, i + 1), el('td', {}, r.patient_name || ''), el('td', {}, r.condition || ''), el('td', {}, r.appointment_date || ''), el('td', {}, r.response_status || 'pending'))));
+}
+function showError(msg) { $('err').textContent = msg || ''; $('err').classList.toggle('hidden', !msg); }
+
+$('loadSample').onclick = async () => {
+  showError('');
+  const data = await (await fetch('/api/sample?n=100')).json();
+  state.rows = data.records; state.csv = null; updateReady();
+};
+$('clear').onclick = () => { state.rows = null; state.csv = null; updateReady(); };
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x === t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === 'panel-' + t.dataset.tab));
+});
+const drop = $('drop');
+drop.onclick = () => $('file').click();
+drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); readFile(e.dataTransfer.files[0]); };
+$('file').onchange = e => readFile(e.target.files[0]);
+function readFile(f) {
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { state.csv = String(r.result); state.csvName = f.name; state.rows = null; showError(''); updateReady(); };
+  r.readAsText(f);
+}
+$('addOne').onclick = () => {
+  const name = $('f_name').value.trim(), cond = $('f_cond').value.trim(), date = $('f_date').value;
+  if (!name || !cond || !date) return showError('Name, condition and appointment date are required.');
+  showError('');
+  const row = { patient_id: $('f_id').value, patient_name: name, condition: cond, appointment_date: date, doctor: $('f_doc').value,
+    phone: $('f_phone').value, notes: $('f_notes').value, response_status: $('f_resp').value, attempts: $('f_att').value };
+  state.csv = null; state.rows = [...(state.rows || []), row];
+  ['f_id', 'f_name', 'f_cond', 'f_doc', 'f_phone', 'f_notes'].forEach(i => $(i).value = '');
+  updateReady();
+};
+
+/* ---------- generate ---------- */
+$('go').onclick = async () => {
+  showError('');
+  $('go').disabled = true; $('resCard').classList.add('hidden');
+  const run = $('runCard'); run.classList.remove('hidden');
+  $('bar').className = 'bar run'; $('bar').style.width = '';
+  $('runTitle').textContent = 'Processing…'; $('runBadge').textContent = 'Running'; $('runBadge').className = 'badge b-grey';
+  ['sTotal', 'sOk', 'sRej', 'sFall', 'sTime'].forEach(i => $(i).textContent = '–');
+  $('rejBox').classList.add('hidden'); $('fbWarn').classList.add('hidden');
+  const t0 = performance.now();
+  const tick = setInterval(() => $('timer').textContent = ((performance.now() - t0) / 1000).toFixed(1) + ' s', 50);
+  try {
+    const body = { model: $('model').value, concurrency: +$('conc').value, batch_size: +$('batch').value };
+    if (state.csv) body.csv_text = state.csv; else body.records = state.rows;
+    const resp = await fetch('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(typeof data.detail === 'string' ? data.detail : 'Request failed (' + resp.status + ')');
+    renderRun(data, (performance.now() - t0) / 1000);
+    state.results = data.results; state.page = 1; renderResults();
+  } catch (e) {
+    $('runCard').classList.add('hidden'); showError(e.message);
+  } finally { clearInterval(tick); $('go').disabled = false; }
+};
+
+function renderRun(d, clientSecs) {
+  const s = d.stats, secs = s.elapsed_ms / 1000;
+  $('bar').className = 'bar'; $('bar').style.width = '100%';
+  $('runTitle').textContent = `Processed ${s.processed} patient record${s.processed === 1 ? '' : 's'}`;
+  $('runSub').textContent = `Model: ${s.model} · round trip incl. network ${clientSecs.toFixed(2)} s` + (s.llm_retries ? ` · ${s.llm_retries} rate-limit retries (lower parallel requests)` : '');
+  const fast = secs < 5;
+  $('runBadge').textContent = fast ? '✓ Under 5 s' : 'Over 5 s';
+  $('runBadge').className = 'badge ' + (fast ? 'b-ok' : 'b-warn');
+  $('timer').textContent = secs.toFixed(2) + ' s';
+  $('sTotal').textContent = s.total_input; $('sOk').textContent = s.processed;
+  $('sRej').textContent = s.rejected; $('sFall').textContent = s.fallback;
+  $('sTime').textContent = secs.toFixed(2) + 's';
+  $('sTimeLbl').textContent = `Pipeline (clean ${s.preprocess_ms.toFixed(0)} ms + generate ${(s.generate_ms / 1000).toFixed(2)} s)`;
+  const reasons = Object.entries(s.fallback_reasons || {});
+  $('fbWarn').classList.toggle('hidden', reasons.length === 0);
+  if (reasons.length) $('fbWarn').textContent = `⚠ ${s.fallback} message(s) used the template fallback. Reason: ` +
+    reasons.map(([r, n]) => `${r} (×${n})`).join('; ') + '. Try smaller batches, lower parallel requests, a faster model (ministral-3b-latest), or increase LLM_TIMEOUT_SECONDS in .env.';
+  const rb = $('rejBody'); rb.replaceChildren();
+  d.rejected.forEach(r => rb.append(el('tr', {}, el('td', {}, r.row), el('td', {}, r.patient_id || '—'), el('td', {}, r.reason))));
+  $('rejBox').classList.toggle('hidden', d.rejected.length === 0);
+  $('rejSum').textContent = `${d.rejected.length} record(s) rejected during cleaning`;
+}
+
+/* ---------- results ---------- */
+function filtered() {
+  const q = $('search').value.toLowerCase(), src = $('fSource').value, typ = $('fType').value;
+  return state.results.filter(r => (!q || [r.patient_id, r.name, r.condition].join(' ').toLowerCase().includes(q))
+    && (!src || r.source === src) && (!typ || r.follow_up_type === typ));
+}
+function renderResults() {
+  $('resCard').classList.remove('hidden');
+  const all = filtered(), size = +$('pageSize').value, pages = Math.max(1, Math.ceil(all.length / size));
+  state.page = Math.min(state.page, pages);
+  const start = (state.page - 1) * size, slice = all.slice(start, start + size);
+  $('resTitle').textContent = `Results (${all.length} records)`;
+  const tb = $('results'); tb.replaceChildren();
+  slice.forEach((r, i) => {
+    const [tl, tc] = TYPE_LABEL[r.follow_up_type];
+    const src = r.source === 'llm' ? badge('AI', 'b-ai') : badge(r.status === 'fallback' ? 'Fallback' : 'Template', r.status === 'fallback' ? 'b-warn' : 'b-tpl');
+    const view = el('button', {}, 'View'); view.onclick = () => openDialog(r);
+    tb.append(el('tr', {}, el('td', {}, start + i + 1), el('td', {}, r.patient_id), el('td', {}, r.name), el('td', {}, r.condition),
+      el('td', {}, badge(tl, tc)), el('td', {}, src), el('td', { class: 'msg' }, el('div', { class: 'ellipsis', style: 'max-width:430px' }, r.message)), el('td', {}, view)));
+  });
+  $('pgInfo').textContent = all.length ? `Showing ${start + 1} to ${Math.min(start + size, all.length)} of ${all.length}` : 'No matching records';
+  const pb = $('pgBtns'); pb.replaceChildren();
+  const go = p => { state.page = p; renderResults(); };
+  const prev = el('button', {}, '‹'); prev.disabled = state.page === 1; prev.onclick = () => go(state.page - 1); pb.append(prev);
+  const shown = new Set([1, pages, state.page - 1, state.page, state.page + 1].filter(p => p >= 1 && p <= pages));
+  let last = 0;
+  [...shown].sort((a, b) => a - b).forEach(p => {
+    if (p - last > 1) pb.append('…');
+    const b = el('button', { class: p === state.page ? 'on' : '' }, p); b.onclick = () => go(p); pb.append(b); last = p;
+  });
+  const next = el('button', {}, '›'); next.disabled = state.page === pages; next.onclick = () => go(state.page + 1); pb.append(next);
+}
+['search', 'fSource', 'fType', 'pageSize'].forEach(id => $(id).addEventListener('input', () => { state.page = 1; renderResults(); }));
+
+function openDialog(r) {
+  $('dName').textContent = `${r.name} · ${r.patient_id}`;
+  $('dMeta').textContent = `${r.condition} · visit ${fmtDate(r.appointment_date)} · follow-up by ${fmtDate(r.follow_up_date)}` + (r.error ? ` · ${r.error}` : '');
+  $('dMsg').textContent = r.message;
+  $('dTips').replaceChildren(...r.tips.map(t => el('li', {}, t)));
+  $('dCopy').onclick = async () => { await navigator.clipboard.writeText(r.message); $('dCopy').textContent = 'Copied ✓'; setTimeout(() => $('dCopy').textContent = 'Copy message', 1200); };
+  $('dlg').showModal();
+}
+$('dClose').onclick = () => $('dlg').close();
+
+$('dl').onclick = () => {
+  const cols = ['patient_id', 'name', 'condition', 'appointment_date', 'follow_up_date', 'follow_up_type', 'source', 'status', 'message', 'tips'];
+  const esc = v => { let s = Array.isArray(v) ? v.join(' | ') : String(v ?? ''); if (/^[=+\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+  const csv = [cols.join(','), ...state.results.map(r => cols.map(c => esc(r[c])).join(','))].join('\n');
+  const a = el('a', { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: 'followup_messages.csv' });
+  a.click(); URL.revokeObjectURL(a.href);
+};
+
+const warnBatch = () => $('batchWarn').classList.toggle('hidden', +$('batch').value <= 10 || $('model').value === OFFLINE);
+$('fastPreset').onclick = () => {
+  $('model').value = 'ministral-3b-latest';
+  $('conc').value = '20';
+  $('batch').value = '5';
+  warnBatch();
+  updateProcessingHint();
+};
+$('conc').onchange = updateProcessingHint;
+$('batch').onchange = () => { warnBatch(); updateProcessingHint(); };
+$('model').onchange = warnBatch;
+init().then(() => { updateReady(); warnBatch(); });
+</script>
+</body>
+</html>
