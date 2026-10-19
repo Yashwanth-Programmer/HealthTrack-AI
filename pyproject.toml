@@ -1,0 +1,16 @@
+[project]
+name = "healthtrack-followup"
+version = "1.0.0"
+description = "AI-powered patient follow-up message generation (Mistral + RAG)"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008"]
+
+[tool.coverage.run]
+source = ["healthtrack"]
