@@ -1,0 +1,191 @@
+{
+  "general": {
+    "label": "General check-up",
+    "aliases": ["general", "check up", "checkup", "routine", "follow up", "consultation"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "reminder", "text": "Take your medicines exactly as prescribed and keep your next appointment."},
+      {"kind": "tip", "text": "Drink enough water, eat balanced meals and aim for 7 to 8 hours of sleep."},
+      {"kind": "tip", "text": "Note down any symptoms so you can discuss them at your next visit."},
+      {"kind": "reminder", "text": "Contact the clinic if your symptoms worsen or new symptoms appear."}
+    ]
+  },
+  "diabetes": {
+    "label": "Diabetes",
+    "aliases": ["diabetes", "diabetic", "type 2 diabetes", "type 1 diabetes", "t2dm", "t1dm", "dm", "sugar", "high sugar", "blood sugar", "diabetes mellitus"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Check your blood sugar as advised by your doctor and note the readings to share at your next visit."},
+      {"kind": "reminder", "text": "Take diabetes medicine or insulin at the same times every day and do not skip doses."},
+      {"kind": "tip", "text": "Choose whole grains, vegetables and protein, and limit sugary drinks and sweets."},
+      {"kind": "tip", "text": "Check your feet daily for cuts or sores and tell your doctor if they do not heal."}
+    ]
+  },
+  "hypertension": {
+    "label": "Hypertension",
+    "aliases": ["hypertension", "high blood pressure", "high bp", "bp", "htn", "blood pressure"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Check your blood pressure at the same time each day and keep a written log."},
+      {"kind": "tip", "text": "Reduce salt in your meals and avoid packaged salty snacks."},
+      {"kind": "reminder", "text": "Take your blood pressure medicine every day, even when you feel well."},
+      {"kind": "tip", "text": "Walk briskly for about 30 minutes on most days unless your doctor advises otherwise."}
+    ]
+  },
+  "asthma": {
+    "label": "Asthma",
+    "aliases": ["asthma", "wheezing", "breathlessness", "reactive airway"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "reminder", "text": "Keep your reliever inhaler with you at all times."},
+      {"kind": "reminder", "text": "Use your controller inhaler daily as prescribed, even when you have no symptoms."},
+      {"kind": "tip", "text": "Avoid known triggers such as dust, smoke and strong smells."},
+      {"kind": "tip", "text": "Seek urgent care if you have severe breathlessness that your reliever inhaler does not relieve."}
+    ]
+  },
+  "high_cholesterol": {
+    "label": "High cholesterol",
+    "aliases": ["high cholesterol", "cholesterol", "dyslipidemia", "dyslipidaemia", "hyperlipidemia", "lipid", "lipids"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "tip", "text": "Limit fried and processed foods and eat more fibre such as oats, fruits and vegetables."},
+      {"kind": "tip", "text": "Stay active with at least 150 minutes of moderate exercise each week."},
+      {"kind": "reminder", "text": "Take your cholesterol medicine as prescribed and repeat your lipid test when your doctor advises."}
+    ]
+  },
+  "thyroid": {
+    "label": "Thyroid disorder",
+    "aliases": ["thyroid", "hypothyroidism", "hyperthyroidism", "hypothyroid", "hyperthyroid", "thyroiditis", "tsh"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "reminder", "text": "Take your thyroid tablet at the same time every day, as directed by your doctor, usually on an empty stomach."},
+      {"kind": "reminder", "text": "Get your thyroid blood test (TSH) done on schedule so your dose can be reviewed."},
+      {"kind": "tip", "text": "Tell your doctor about unusual tiredness, weight changes or a racing heartbeat."}
+    ]
+  },
+  "back_pain": {
+    "label": "Back pain",
+    "aliases": ["back pain", "lower back pain", "lumbar", "backache", "spondylosis", "sciatica", "slip disc", "disc prolapse"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Avoid sitting for long periods; stand up and stretch every 30 to 45 minutes."},
+      {"kind": "tip", "text": "Do the gentle stretches shown by your physiotherapist and avoid lifting heavy weights."},
+      {"kind": "tip", "text": "Bend at the knees and keep your back straight when picking things up."},
+      {"kind": "reminder", "text": "Contact us urgently if you notice leg weakness, numbness or loss of bladder control."}
+    ]
+  },
+  "knee_injury": {
+    "label": "Knee injury",
+    "aliases": ["knee injury", "knee pain", "acl", "meniscus", "ligament", "sprain", "ankle sprain", "knee"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Rest the knee, apply ice for 15 to 20 minutes a few times a day and keep it raised."},
+      {"kind": "reminder", "text": "Do the strengthening exercises your physiotherapist recommended."},
+      {"kind": "tip", "text": "Avoid twisting movements and high-impact activity until your doctor clears you."},
+      {"kind": "reminder", "text": "Contact the clinic if swelling, redness or pain increases."}
+    ]
+  },
+  "migraine": {
+    "label": "Migraine",
+    "aliases": ["migraine", "headache", "cluster headache", "chronic headache"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "tip", "text": "Keep a headache diary noting triggers such as poor sleep, skipped meals, stress and screen time."},
+      {"kind": "tip", "text": "Keep regular sleep and meal times and drink enough water."},
+      {"kind": "reminder", "text": "Take your migraine medicine early, at the first sign of an attack, exactly as prescribed."},
+      {"kind": "tip", "text": "Rest in a dark, quiet room during an attack."}
+    ]
+  },
+  "viral_fever": {
+    "label": "Viral fever",
+    "aliases": ["viral fever", "fever", "flu", "influenza", "cold", "cough", "viral infection", "common cold", "URTI"],
+    "follow_up_days": 3,
+    "tips": [
+      {"kind": "tip", "text": "Drink plenty of fluids and get plenty of rest."},
+      {"kind": "reminder", "text": "If your fever lasts more than three days or you have trouble breathing, contact us or visit the nearest hospital."},
+      {"kind": "reminder", "text": "If antibiotics were prescribed, complete the full course."}
+    ]
+  },
+  "post_surgery": {
+    "label": "Post-surgery recovery",
+    "aliases": ["post surgery", "post-surgery", "post operative", "post-operative", "post op", "surgery", "surgical", "appendectomy", "hernia repair"],
+    "follow_up_days": 5,
+    "tips": [
+      {"kind": "tip", "text": "Keep the wound clean and dry and follow your dressing instructions."},
+      {"kind": "reminder", "text": "Call us if you notice fever, redness, swelling or discharge at the wound."},
+      {"kind": "tip", "text": "Take short walks regularly to support recovery, and avoid heavy lifting until you are cleared."},
+      {"kind": "reminder", "text": "Take pain medicine only as prescribed."}
+    ]
+  },
+  "arthritis": {
+    "label": "Arthritis",
+    "aliases": ["arthritis", "joint pain", "osteoarthritis", "rheumatoid arthritis", "rheumatoid", "joint stiffness"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "tip", "text": "Gentle low-impact exercise such as walking or swimming helps keep your joints flexible."},
+      {"kind": "tip", "text": "A warm compress can ease stiffness, and a cold pack can reduce swelling."},
+      {"kind": "tip", "text": "Keeping a healthy weight reduces stress on your joints."}
+    ]
+  },
+  "skin_allergy": {
+    "label": "Skin allergy",
+    "aliases": ["skin allergy", "allergy", "allergic", "eczema", "dermatitis", "rash", "urticaria", "hives", "allergic rhinitis"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Avoid known triggers and use a mild, fragrance-free soap."},
+      {"kind": "tip", "text": "Moisturise your skin regularly and avoid scratching; keep your nails short."},
+      {"kind": "reminder", "text": "Use any prescribed cream exactly as directed."}
+    ]
+  },
+  "gastritis": {
+    "label": "Acidity / gastritis",
+    "aliases": ["gastritis", "acidity", "acid reflux", "gerd", "ulcer", "indigestion", "gastric", "peptic ulcer"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Eat smaller, regular meals and avoid spicy and oily food."},
+      {"kind": "tip", "text": "Do not lie down for two hours after eating."},
+      {"kind": "tip", "text": "Limit tea, coffee, alcohol and smoking."},
+      {"kind": "reminder", "text": "Take your acid medicine as prescribed, before meals if your doctor advised."}
+    ]
+  },
+  "anemia": {
+    "label": "Anemia",
+    "aliases": ["anemia", "anaemia", "low hemoglobin", "low haemoglobin", "iron deficiency", "low hb"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "tip", "text": "Eat iron-rich foods such as leafy greens, lentils and jaggery, along with vitamin C foods like lemon or amla."},
+      {"kind": "reminder", "text": "Take iron supplements as prescribed and avoid taking them with tea or coffee."},
+      {"kind": "reminder", "text": "Repeat your haemoglobin test when your doctor advises."}
+    ]
+  },
+  "pregnancy": {
+    "label": "Pregnancy care",
+    "aliases": ["pregnancy", "pregnant", "antenatal", "prenatal", "anc", "postnatal"],
+    "follow_up_days": 14,
+    "tips": [
+      {"kind": "reminder", "text": "Take your folic acid, iron and calcium supplements as prescribed."},
+      {"kind": "reminder", "text": "Attend all scheduled antenatal check-ups and scans."},
+      {"kind": "reminder", "text": "Contact us right away for bleeding, severe headache, fluid leaking or reduced baby movements."}
+    ]
+  },
+  "anxiety": {
+    "label": "Anxiety / stress",
+    "aliases": ["anxiety", "stress", "depression", "panic", "mental health", "low mood"],
+    "follow_up_days": 7,
+    "tips": [
+      {"kind": "tip", "text": "Keep a regular sleep routine and include light physical activity in your day."},
+      {"kind": "tip", "text": "Talk to someone you trust if you feel low, and keep your next appointment."},
+      {"kind": "reminder", "text": "If you ever feel unsafe or have thoughts of self-harm, call emergency services or a crisis helpline immediately."}
+    ]
+  },
+  "uti": {
+    "label": "Urinary tract infection",
+    "aliases": ["uti", "urinary tract infection", "urine infection", "cystitis"],
+    "follow_up_days": 5,
+    "tips": [
+      {"kind": "tip", "text": "Drink plenty of water through the day."},
+      {"kind": "reminder", "text": "Complete the full course of antibiotics even if you feel better."},
+      {"kind": "reminder", "text": "Contact us if you develop fever, back pain or blood in your urine."}
+    ]
+  }
+}
