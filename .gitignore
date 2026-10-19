@@ -1,0 +1,24 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.venv/
+venv/
+
+# Local logs
+logs/*
+!logs/.gitkeep
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
